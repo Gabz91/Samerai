@@ -29,8 +29,9 @@ namespace GameScripts
             health = 10;
             currentHealth = 10;
             attack = 1;
+            defense = 1;
         }
-                
+
         public void GainExp(int expGained)
         {
             this.exp += expGained;
@@ -48,13 +49,16 @@ namespace GameScripts
 
         public override void InflictDamage(int damage)
         {
+            damage = damage - defense;
+            if (damage <= 0)
+                damage = 1;
+            currentHealth -= damage;
             if (currentHealth <= 0)
             {
-                Debug.Log("You lose");
+                Debug.LogError("You were defeated");
                 IsAlive = false;
                 Time.timeScale = 0;
             }
-            currentHealth -= damage;
         }
 
         public void GainSoul(int soulValue)
@@ -68,11 +72,13 @@ namespace GameScripts
         public void AddEquipStats(Item item)
         {
             attack += ((Weapon)item).Power;
+            defense += ((Weapon)item).Defense;
         }
 
         public void RemoveEquipStats(Item item)
         {
             attack -= ((Weapon)item).Power;
+            defense -= ((Weapon)item).Defense;
         }
     }
 }

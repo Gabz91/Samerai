@@ -23,9 +23,9 @@ namespace GameScripts
         public static float positionZ;
 
         //Pools
-        PoolOfObjects foesPool, soulsPool;
+        PoolOfObjects foesPool, soulsPool, itemsPool;
         //Enemy fields
-        GameObject newFoe, newSoul;
+        GameObject newFoe, newSoul, newItem;
         public static int enemiesKilled = 0;
         public static int enemiesToKill = 0;
         public static int enemiesSpawned = 0;
@@ -93,6 +93,7 @@ namespace GameScripts
 
             soulsPool = new PoolOfObjects(rsMng.soulsPool, rsMng.soulPrefab);
             foesPool = new PoolOfObjects(rsMng.foesPool, rsMng.foePrefab);
+            itemsPool = new PoolOfObjects(rsMng.itemsPool, rsMng.itemPrefab);
             if (stageComplete == null)
             {
                 stageComplete = GameObject.Find("StageCompleteText");
@@ -177,18 +178,24 @@ namespace GameScripts
             InitNewStage();
         }
 
-        //Checks if any foe on the stage is dead
         public void KillFoe(GameObject foeObj)
         {
             NPC foe = foeObj.GetComponentInChildren<EnemyController>().foe;
             player.GainExp(foe.EXP);
             SpawnSoul(foeObj);
+
+            //Drop chance
+            int dropFactor = Random.Range(0, 2);
+            if (dropFactor == 1)
+                SpawnItem(foeObj);
+
             rsMng.hud.UpdateCharacterStats();
             foesPool.DisableObject(foeObj);
             enemiesKilled++;            
             if (enemiesKilled == enemiesToKill)
                 StartCoroutine("StageCompletition");
             rsMng.hud.UpdateStageStats();
+            
         }
 
         void SpawnSoul(GameObject foeSlained)
@@ -196,14 +203,33 @@ namespace GameScripts
             NPC foe = foeSlained.GetComponentInChildren<EnemyController>().foe;
             newSoul = soulsPool.GetObject();
             newSoul.GetComponent<Collectible>().value = foe.SoulValue;
+            newSoul.GetComponent<Collectible>().type = CollectibleType.SOUL;
             newSoul.transform.position = foeSlained.transform.position;
-        } 
+        }
+
+        void SpawnItem(GameObject foeSlained)
+        {
+            //It only spawn weapons at the moment. Needs to be changed to something more flexible in the future.
+            int id = ItemDatabase.GetRandomWeaponID();
+            newItem = itemsPool.GetObject();
+            newItem.GetComponent<Collectible>().id = id;
+            newItem.GetComponent<Collectible>().type = CollectibleType.WEAPON;
+            newItem.transform.position = foeSlained.transform.position;
+            newItem.transform.GetComponentInChildren<SpriteRenderer>().sprite = Resources.Load<Sprite>("Art/Icons/" + ItemDatabase.GetWeaponSlug(id));
+        }
 
         //Removes a soul from the screen when the player collects it
         public void CollectSoul(GameObject soulCollected)
         {
             soulsPool.DisableObject(soulCollected);
             rsMng.hud.UpdateCharacterStats();
+        }
+
+        //Removes an item from the screen when the player collects it
+        public void CollectItem(GameObject itemCollected)
+        {
+            Debug.Log("COLLECTING " + itemCollected.name);
+            itemsPool.DisableObject(itemCollected);
         }
 
     }

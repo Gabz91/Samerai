@@ -23,11 +23,11 @@ namespace GameScripts
         /// </summary>
         public float attackRange;
 
-        public NPC(NPCType type,int stageLvl)
+        public NPC(NPCType type, int stageLvl)
         {
             Level = stageLvl;
             this.type = type;
-            attack = 1;
+            attack = 1 + stageLvl / 2;
             health = 5 * Level;
             currentHealth = health;
             switch (type)

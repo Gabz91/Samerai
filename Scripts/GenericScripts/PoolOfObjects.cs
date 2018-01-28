@@ -49,6 +49,8 @@ namespace GenericScripts
 
         public void DisableObject(GameObject objToDisable)
         {
+            //Implement improved behaviours
+            Debug.Log("Disabling " + objToDisable.name);
             objToDisable.SetActive(false);
         }
 

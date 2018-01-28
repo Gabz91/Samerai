@@ -28,7 +28,6 @@ namespace GameScripts
 
                     //Push the foe on hit
                     transform.position = Vector3.MoveTowards(transform.position, other.transform.position, -10 * Time.deltaTime);
-
                     if (!foe.IsAlive)
                         game.KillFoe(gameObject);
                 }
@@ -36,18 +35,26 @@ namespace GameScripts
                 {
                     foe = GetComponent<EnemyController>().foe;
                     foe.InflictDamage(player.Attack);
-
                     if (!foe.IsAlive)
                         game.KillFoe(gameObject);
                 }
+                
             }
             else if (tag.Equals("Player"))
             {
                 switch (other.tag)
                 {
                     case "Collectible":
-                        player.GainSoul(other.GetComponent<Collectible>().value);
-                        game.CollectSoul(other.gameObject);
+                        if (other.GetComponent<Collectible>().type == CollectibleType.SOUL)
+                        {
+                            player.GainSoul(other.GetComponent<Collectible>().value);
+                            game.CollectSoul(other.gameObject);
+                        }
+                        else if (other.GetComponent<Collectible>().type == CollectibleType.WEAPON)
+                        {
+                            ResourceManager.Instance.AddItemInv(other.GetComponent<Collectible>().id, ItemType.WEAPON);
+                            game.CollectItem(other.gameObject);
+                        }
                         break;
                     case "EnemyWeapon":
                         game.HitThePlayer(other.transform.GetComponentInParent<EnemyController>().foe.Attack);

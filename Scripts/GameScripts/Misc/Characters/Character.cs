@@ -21,6 +21,9 @@ namespace GameScripts
         [SerializeField]
         protected int attack;
         public int Attack { get { return attack; } }
+        [SerializeField]
+        protected int defense;
+        public int Defense { get { return defense; } }
 
         public virtual void InflictDamage(int damage)
         {

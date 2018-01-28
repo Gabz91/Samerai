@@ -26,7 +26,7 @@ namespace GameScripts
 
         private List<Item> itemBlueprints = new List<Item>();
         private List<Item> weaponBlueprints = new List<Item>();
-        private JsonData itemData;
+        private static JsonData itemData;
 
         // Use this for initialization
         private ItemDatabase()
@@ -54,18 +54,28 @@ namespace GameScripts
             Item newItem;
             if (type == ItemType.WEAPON)
             {
-                newItem = new Weapon(itemData["Weapons"][id]["name"].ToString(), itemData["Weapons"][id]["slug"].ToString(), itemData["Weapons"][id]["description"].ToString(), (int)itemData["Weapons"][id]["power"]);
+                newItem = new Weapon(itemData["Weapons"][id]["name"].ToString(), itemData["Weapons"][id]["slug"].ToString(), itemData["Weapons"][id]["description"].ToString(), (int)itemData["Weapons"][id]["power"], (int)itemData["Weapons"][id]["defense"]);
                 newItem.type = ItemType.WEAPON;
                 newItem.id = id;
             }
             else
             {
-                newItem = new Item(itemData["Items"][id]["name"].ToString(), itemData["Items"][id]["slug"].ToString(), itemData["Items"][id]["description"].ToString(), (int)itemData["Iems"][id]["value"]);
+                newItem = new Item(itemData["Items"][id]["name"].ToString(), itemData["Items"][id]["slug"].ToString(), itemData["Items"][id]["description"].ToString(), (int)itemData["Iems"][id]["value"], (int)itemData["Weapons"][id]["defense"]);
                 newItem.type = ItemType.ITEM;
                 newItem.id = id;
             }
 
             return newItem;
+        }
+
+        public static int GetRandomWeaponID()
+        {
+            return Random.Range(0, itemData["Weapons"].Count);
+        }
+
+        public static string GetWeaponSlug(int id)
+        {
+            return itemData["Weapons"][id]["slug"].ToString();
         }
     }
 }

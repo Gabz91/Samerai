@@ -103,7 +103,7 @@ namespace GameScripts
             x = 0;
             z = 0;
 
-            x = (Input.GetAxis("Horizontal") + X_AXIS) * speed;
+            x = (Input.GetAxis("Horizontal") * 1.5f + X_AXIS) * speed;
             z = (Input.GetAxis("Vertical")*1.5f + Z_AXIS) * speed;
 
             if (characterCtrl.isGrounded)
@@ -119,10 +119,7 @@ namespace GameScripts
 
 
             Vector3 vel = new Vector3(x, y, z);
-
-            //Reduces the speed on the Z axis when the player is attacking
-            //if (isAttacking)
-            //    vel = new Vector3(transform.right.x/2, y, z/3);
+            
             if (isDodging)
                 vel = new Vector3(transform.right.x*4, y, z);
             if (isUsingTech)

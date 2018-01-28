@@ -6,9 +6,16 @@ namespace GameScripts
 {
     public class Collectible : MonoBehaviour
     {
-        Item item;
+        public int id;
+        public CollectibleType type;
         Transform collectiblesPool;
         public int value;
-        int Value { get { return value; } }
+    }
+
+    public enum CollectibleType
+    {
+        ITEM,
+        WEAPON,
+        SOUL
     }
 }

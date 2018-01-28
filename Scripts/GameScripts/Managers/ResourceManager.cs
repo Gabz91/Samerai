@@ -42,10 +42,10 @@ namespace GameScripts
         //Audio           
         public AudioClip jump, attack, life;
         //Gameobjects and Transforms
-        public GameObject playerPrefab, foePrefab, soulPrefab, slotPrefab, itemPrefab, kunaiPrefab, fireballPrefab;  //Prefabs
+        public GameObject playerPrefab, foePrefab, soulPrefab, slotPrefab, itemIconPrefab, itemPrefab, kunaiPrefab, fireballPrefab;  //Prefabs
         public GameObject inventoryPanel, equipmentPanel, characterStatusPanel, stagePanel;
         public Transform playerTrans;
-        public Transform foesPool, soulsPool, kunaisPool; //Pools of objects
+        public Transform foesPool, soulsPool, kunaisPool, itemsPool; //Pools of objects
         //Misc
         public Inventory inventory;
         public Equipment equipment;
@@ -130,6 +130,7 @@ namespace GameScripts
                 playerPrefab = (GameObject)Resources.Load("Prefabs/Characters/PlayerCharacter", typeof(GameObject));
                 foePrefab = (GameObject)Resources.Load("Prefabs/Characters/FoeCtrl", typeof(GameObject));
                 soulPrefab = (GameObject)Resources.Load("Prefabs/Soul", typeof(GameObject));
+                itemIconPrefab = (GameObject)Resources.Load("Prefabs/ItemIcon", typeof(GameObject));
                 itemPrefab = (GameObject)Resources.Load("Prefabs/Item", typeof(GameObject));
                 slotPrefab = (GameObject)Resources.Load("Prefabs/Slot", typeof(GameObject));
                 kunaiPrefab = (GameObject)Resources.Load("Prefabs/Projectiles/Kunai", typeof(GameObject));
@@ -149,6 +150,7 @@ namespace GameScripts
                 floorColl = GameObject.FindGameObjectWithTag("Floor").GetComponent<BoxCollider>();
                 soulsPool = GameObject.FindGameObjectWithTag("SoulsPool").transform;
                 kunaisPool = GameObject.FindGameObjectWithTag("KunaisPool").transform;
+                itemsPool = GameObject.FindGameObjectWithTag("ItemsPool").transform;
             }
         }
 
@@ -216,7 +218,7 @@ namespace GameScripts
                 if (invSlots[i].transform.childCount == 0)
                 {
                     inventory.items[i] = newItem;
-                    GameObject itemObj = GameObject.Instantiate(itemPrefab, invSlots[i].transform);
+                    GameObject itemObj = GameObject.Instantiate(itemIconPrefab, invSlots[i].transform);
                     ItemData itemData = itemObj.GetComponent<ItemData>();
                     itemData.invSlotID = i;
                     itemData.item = newItem;
@@ -244,7 +246,7 @@ namespace GameScripts
                     inventory.items[i] = newItem;
                     GameObject itemObj;
                     if (invSlots[i].transform.childCount == 0)
-                        itemObj = GameObject.Instantiate(itemPrefab, invSlots[i].transform);
+                        itemObj = GameObject.Instantiate(itemIconPrefab, invSlots[i].transform);
                     else
                         itemObj = invSlots[i].transform.GetChild(0).gameObject;
                     ItemData itemData = itemObj.GetComponent<ItemData>();
@@ -274,7 +276,7 @@ namespace GameScripts
                     newItem = itemDB.GetItemByID(newItem.id, newItem.type);
                     equipment.items[i] = newItem;
                     if (equipSlots[i].transform.childCount == 0)
-                        itemObj = GameObject.Instantiate(itemPrefab, equipSlots[i].transform);
+                        itemObj = GameObject.Instantiate(itemIconPrefab, equipSlots[i].transform);
                     else
                         itemObj = equipSlots[i].transform.GetChild(0).gameObject;
                     ItemData itemData = itemObj.GetComponent<ItemData>();

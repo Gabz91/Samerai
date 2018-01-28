@@ -6,20 +6,13 @@ namespace GameScripts
 {
     public class Weapon : Item
     {
-        int power;
-        public int Power { get { return power; } }
-
-        public Weapon(string name, string slug, string description, int power) : base (name, slug, description, power)
+        public Weapon(string name, string slug, string description, int power, int defense) : base (name, slug, description, power, defense)
         {
             this.name = name;
             this.description = description;
             this.slug = slug;
             this.power = power;
-        }
-
-        public void ShowWeapon()
-        {
-            Debug.Log("Name: " + Name + " Description: " + Description + " Power: " + Power);
+            this.defense = defense;
         }
     }
 }

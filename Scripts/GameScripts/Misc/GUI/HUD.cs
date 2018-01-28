@@ -25,6 +25,7 @@ namespace GameScripts
                 player = ResourceManager.Instance.player;
             characterStatsPanel.transform.Find("Level").GetComponent<Text>().text = "Level " + player.Level;
             characterStatsPanel.transform.Find("Attack").GetComponent<Text>().text = "Attack " + player.Attack;
+            characterStatsPanel.transform.Find("Defense").GetComponent<Text>().text = "Defense " + player.Defense;
             characterStatsPanel.transform.Find("HealthText").GetComponent<Text>().text = "Health " + player.CurrentHealth + " I " + player.Health;
             characterStatsPanel.transform.Find("ExpText").GetComponent<Text>().text = "Exp " + player.Exp + " I " +player.ExpNeeded;
             characterStatsPanel.transform.Find("Health").GetComponent<Image>().fillAmount = (float)player.CurrentHealth / player.Health;
